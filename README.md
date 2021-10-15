@@ -1,6 +1,6 @@
 # Code Examples From The 'Making Games With NES' book
 
-Me just going through Steven Hugg's book, sans the need to use the 8bitworkshop web IDE and subsituting whatever abstractions his IDE doesn't show.
+Me just going through [Steven Hugg's book][4], sans the need to use the [8bitworkshop web IDE][5] and subsituting whatever abstractions his IDE doesn't show.
 
 ## Building the Examples
 
@@ -31,3 +31,5 @@ source ~/.bashrc
 [1]: https://cc65.github.io/index.html
 [2]: https://code.visualstudio.com
 [3]: https://github.com/tlgkccampbell/code-ca65
+[4]: https://www.amazon.com/gp/product/1075952727/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1075952727&linkCode=as2&tag=pzp-20&linkId=633176e8b36fea7f927020e2c322d80a
+[5]: https://8bitworkshop.com/
