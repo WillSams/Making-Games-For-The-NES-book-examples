@@ -2,11 +2,17 @@
 # editorconfig.org
 root = true
 
-[*.s]
-indent_style = space
+[*]
+trim_trailing_whitespace = true
 end_of_line = lf
 charset = utf-8
-trim_trailing_whitespace = true
+indent_style = space
+
+[*.s]
 insert_final_newline = true
 indent_size = 2
 continuation_indent_size = 2
+
+[*.{c,h},{common.mk,Makefile}]
+indent_size = 4
+continuation_indent_size = 4

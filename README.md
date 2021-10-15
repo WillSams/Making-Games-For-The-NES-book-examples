@@ -1,6 +1,6 @@
 # Code Examples From The 'Making Games With NES' book
 
-Me just going through [Steven Hugg's book][4], sans the need to use the [8bitworkshop web IDE][5] and subsituting whatever abstractions his IDE doesn't show.
+Me just going through [Steven Hugg's book][4], sans the need to use the [8bitworkshop web IDE][5] and substituting whatever abstractions his IDE doesn't show.  The book makes use of [Shiru's NESlib][6] and the examples here use [a modified version by clbr][7].
 
 ## Building the Examples
 
@@ -10,7 +10,7 @@ I use the assembler/linker provided by the [cc65 compiler][1].  Before compiling
 sudo apt install cc65 build-essential
 ```
 
-Each example will have to be compiled individually.  Just execute `make` within the directory of the example's corresponding make file.
+Each example will have to be compiled individually.  Just execute `make` within the directory of the example's corresponding make file.  You can execute `make run` to launch your compiled NES rom using FCEUX. If on Debian-based system, download the latest version from the [FCEUX website][8] instead of using the very old version provided by your package manager.  With that said, the examples should run on any emulator, including [Mesen][9].
 
 ## Editing
 
@@ -33,3 +33,7 @@ source ~/.bashrc
 [3]: https://github.com/tlgkccampbell/code-ca65
 [4]: https://www.amazon.com/gp/product/1075952727/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1075952727&linkCode=as2&tag=pzp-20&linkId=633176e8b36fea7f927020e2c322d80a
 [5]: https://8bitworkshop.com/
+[6]: https://shiru.untergrund.net/
+[7]: https://github.com/clbr/neslib
+[8]: https://ci.appveyor.com/api/projects/zeromus/fceux/artifacts/fceux-2.4.0-amd64.deb?branch=master&job=Ubuntu
+[9]: https://mesen.ca/
