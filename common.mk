@@ -17,6 +17,7 @@ DEBUGGER = fceux
 
 CS=$(wildcard *.c)
 SS=$(wildcard *.s)
+crt0=$(wildcard includes/*.s)
 OBJS=$(CS:.c=.o)
 OBJS+=$(SS:.s=.o)
 

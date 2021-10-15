@@ -7,9 +7,6 @@ Finally, turn on the PPU to display video.
 #include <stdint.h>
 #include "./../includes/neslib.h"
 
-// link the pattern table into CHR ROM
-//#link "chr_generic.s"
-
 typedef uint8_t u8;
 
 #pragma bss-name (push,"ZEROPAGE")
