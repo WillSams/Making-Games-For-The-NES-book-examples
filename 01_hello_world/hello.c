@@ -4,11 +4,21 @@ Set the screen background color and palette colors.
 Then write a message to the nametable.
 Finally, turn on the PPU to display video.
 */
-
-#include "../neslib.h"
+#include <stdint.h>
+#include "./../includes/neslib.h"
 
 // link the pattern table into CHR ROM
 //#link "chr_generic.s"
+
+typedef uint8_t u8;
+
+#pragma bss-name (push,"ZEROPAGE")
+#pragma data-name (push,"ZEROPAGE")
+
+u8 oam_off;
+
+#pragma data-name(pop)
+#pragma bss-name (pop)
 
 // main function, run after console reset
 void main(void) {

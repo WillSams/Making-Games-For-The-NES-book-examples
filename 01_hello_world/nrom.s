@@ -1,6 +1,6 @@
 .segment "INESHDR"
   .byte "NES", $1A	; iNES always stars with bytes  $4e,$45,$53,$1a
-  .byte 1				; # of 16 KB PRG ROM Banks (this can vary by mapper)
+  .byte 2				; # of 16 KB PRG ROM Banks (this can vary by mapper)
   .byte 1				; # of 8 KB CHR ROM Banks (this can vary by mapper)
   ;============================================================================================
   ; iNES flag 6

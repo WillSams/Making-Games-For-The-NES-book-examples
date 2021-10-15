@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.s": "ca65",
+        "*.yml": "yaml",
+        "neslib.h": "c"
+    }
+}
