@@ -11,7 +11,7 @@ OD  = od65
 extract = ./tools/nesextract
 radare2 = ./tools/rasm2
 
-LDFLAGS = -C nes.cfg -m $(NAME).map # -Ln $(NAME).labels --dbgfile $(APP_NAME).dbg -vm -t nes -Oisr
+LDFLAGS = -C nes.cfg -m $(NAME).map -Ln $(NAME).labels -vm -t nes -Oisr
 OBJDUMP = od65
 DEBUGGER = fceux
 
@@ -22,16 +22,14 @@ OBJS+=$(SS:.s=.o)
 
 INCLUDES_DIR=./../includes
 
-all: $(BIN) #$(RUNTIME_LIB)
+all: $(BIN) 
 
 clean:
 	rm -f $(BIN) $(shell find ./../ -name '*.o')
-	rm -f runtime.* *.map *.dump disassembly
+	rm -f *.labels *.map *.dump disassembly
 
 $(BIN): $(OBJS)
 	$(CC) -o $(BIN) $(LDFLAGS) $^
-
-#$(OBJS): $(wildcard $(INCLUDES_DIR)/*.h $(INCLUDES_DIR)/*.sinc)
 
 disassemble:
 	$(extract) $(BIN)  

@@ -19,6 +19,7 @@ FT_SFX_STREAMS			= 4		;number of sound effects played at once, 1..4
 	.import __STARTUP_LOAD__,__STARTUP_RUN__,__STARTUP_SIZE__
 	.import	__CODE_LOAD__   ,__CODE_RUN__   ,__CODE_SIZE__
 	.import	__RODATA_LOAD__ ,__RODATA_RUN__ ,__RODATA_SIZE__
+	.import NES_MAPPER,NES_PRG_BANKS,NES_CHR_BANKS,NES_MIRRORING
 
 	.include "zeropage.inc"
 
@@ -47,8 +48,6 @@ CTRL_PORT2	=$4017
 
 OAM_BUF		=$0200
 PAL_BUF		=$01c0
-
-
 
 .segment "ZEROPAGE"
 
@@ -114,10 +113,6 @@ initPPU:
 @2:
     bit PPU_STATUS
     bpl @2
-
-; no APU frame counter IRQs
-	lda #$40
-	sta PPU_FRAMECNT
 
 clearPalette:
 
@@ -224,18 +219,18 @@ detectNTSC:
 
 	jmp _main			;no parameters
 
-	.include "./../includes/display.sinc"
+	.include "../includes/display.s"
 
-	.include "../includes/neslib.sinc"
+	.include "../includes/neslib.s"
 
 .segment "RODATA"
 
 music_data:
-;	.include "music.s"
+;	.include "music.sinc"
 
 .if(FT_SFX_ENABLE)
 sounds_data:
-;	.include "sounds.s"
+;	.include "sounds.sinc"
 .endif
 
 .segment "SAMPLES"
@@ -250,3 +245,5 @@ sounds_data:
 	.word start	;$fffc reset
 	.word irq	;$fffe irq / brk
 
+.segment "CHARS"
+	.incbin "CHR.chr"

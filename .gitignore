@@ -52,5 +52,6 @@ Mkfile.old
 dkms.conf
 
 **/**/*.dump
+**/**.*.labels
 **/**/disassembly
 
