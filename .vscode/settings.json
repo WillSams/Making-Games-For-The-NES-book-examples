@@ -2,6 +2,8 @@
     "files.associations": {
         "*.s": "ca65",
         "*.yml": "yaml",
-        "neslib.h": "c"
+        "neslib.h": "c",
+        "string.h": "c",
+        "stdint.h": "c"
     }
 }

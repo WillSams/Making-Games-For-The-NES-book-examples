@@ -1,3 +1,3 @@
-NAME = scrolling
+NAME = sprites
 
 include ../common.mk
