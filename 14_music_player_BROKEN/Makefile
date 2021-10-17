@@ -1,3 +1,3 @@
-NAME = sound_tester
+NAME = music_player
 
 include ../common.mk
