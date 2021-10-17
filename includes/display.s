@@ -15,8 +15,6 @@ _oam_clear_fast:
 	.endrepeat
 
 	rts
-
-	
 	
 ;void __fastcall__ oam_meta_spr_pal(unsigned char x,unsigned char y,unsigned char pal,const unsigned char *metasprite);
 
@@ -38,9 +36,7 @@ _oam_meta_spr_pal:
 	sta <DST			;this is palette, just repurposing RAM variable name
 
 	ldx _oam_off
-
 @1:
-
 	lda (PTR),y			;x offset
 	cmp #$80
 	beq @2
