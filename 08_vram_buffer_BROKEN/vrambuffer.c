@@ -24,7 +24,6 @@ u8 oam_off;
 #pragma data-name(pop)
 #pragma bss-name(pop)
 
-// function to scroll window up and down until end
 void scroll_demo() {
   int x = 0;   // x scroll position
   int y = 0;   // y scroll position
