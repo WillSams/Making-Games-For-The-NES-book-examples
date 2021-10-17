@@ -21,9 +21,6 @@ u8 oam_off;
 #pragma data-name(pop)
 #pragma bss-name(pop)
 
-// link the pattern table into CHR ROM
-//#link "chr_generic.s"
-
 ///// METASPRITES
 
 #define TILE 0xd8
