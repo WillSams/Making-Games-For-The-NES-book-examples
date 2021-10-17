@@ -1,3 +1,5 @@
+#ifndef _NESLIB_H
+#define _NESLIB_H
 /*
  (C) 2015 Alex Semenov (Shiru)
  (C) 2016 Lauri Kasanen
@@ -255,7 +257,7 @@ void __fastcall__ memfill(void *dst, unsigned char value, unsigned int len);
 // delay for N frames
 void __fastcall__ delay(unsigned char frames);
 
-// display.s functions
+// display.sinc functions
 void __fastcall__ oam_clear_fast(void);
 void __fastcall__ oam_meta_spr_pal(unsigned char x,unsigned char y,unsigned char pal,const unsigned char *metasprite);
 void __fastcall__ oam_meta_spr_clip(signed int x,unsigned char y,const unsigned char *metasprite);
@@ -305,7 +307,7 @@ void __fastcall__ nmi_set_callback(void (*callback)(void));
 
 // macro to calculate nametable address from X,Y in compile time
 
-#define NTADR_A(x,y)	 	   (NAMETABLE_A|(((y)<<5)|(x)))
+#define NTADR_A(x,y)	 	(NAMETABLE_A|(((y)<<5)|(x)))
 #define NTADR_B(x,y) 		(NAMETABLE_B|(((y)<<5)|(x)))
 #define NTADR_C(x,y) 		(NAMETABLE_C|(((y)<<5)|(x)))
 #define NTADR_D(x,y) 		(NAMETABLE_D|(((y)<<5)|(x)))
@@ -330,4 +332,6 @@ typedef struct OAMSprite {
 
 extern byte oam_off;
 #pragma zpsym ("oam_off")
+
+#endif /* neslib.h */
 

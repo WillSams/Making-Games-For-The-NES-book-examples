@@ -19,7 +19,6 @@
 	.export _set_vram_update,_flush_vram_update
 	.export _memfill,_delay
 	.export _get_ppu_ctrl_var,_set_ppu_ctrl_var
-	.export _nesclock
 
 
 
@@ -59,14 +58,14 @@ nmi:
 	lda (PAL_BG_PTR),y
 	sta PPU_DATA
 	tax
-
+	
 	.repeat 3,I
 	ldy PAL_BUF+1+I
 	lda (PAL_BG_PTR),y
 	sta PPU_DATA
 	.endrepeat
 
-	.repeat 3,J
+	.repeat 3,J		
 	stx PPU_DATA			;background color
 	.repeat 3,I
 	ldy PAL_BUF+5+(J*4)+I
@@ -75,7 +74,7 @@ nmi:
 	.endrepeat
 	.endrepeat
 
-	.repeat 4,J
+	.repeat 4,J		
 	stx PPU_DATA			;background color
 	.repeat 3,I
 	ldy PAL_BUF+17+(J*4)+I
@@ -90,7 +89,7 @@ nmi:
 	beq @skipUpd
 	lda #0
 	sta <VRAM_UPDATE
-
+	
 	lda <NAME_UPD_ENABLE
 	beq @skipUpd
 
@@ -323,7 +322,6 @@ _ppu_mask:
 _ppu_system:
 
 	lda <NTSC_MODE
-	ldx #$00
 	rts
 
 ;unsigned char __fastcall__ get_ppu_ctrl_var(void);
@@ -331,7 +329,6 @@ _ppu_system:
 _get_ppu_ctrl_var:
 
 	lda <PPU_CTRL_VAR
-	ldx #$00
 	rts
 
 ;void __fastcall__ set_ppu_ctrl_var(unsigned char var);
@@ -411,7 +408,6 @@ _oam_spr:
 	txa
 	clc
 	adc #4
-	ldx #$00
 	rts
 
 
@@ -470,7 +466,6 @@ _oam_meta_spr:
 @3:
 
 	txa
-	ldx #$00
 	rts
 
 
@@ -817,7 +812,7 @@ _sfx_play:
 @sfxPriority:
 
 	.byte FT_SFX_CH0,FT_SFX_CH1,FT_SFX_CH2,FT_SFX_CH3
-
+	
 .else
 	rts
 .endif
@@ -878,7 +873,6 @@ _pad_poll:
 	txa
 	sta <PAD_STATEP,y
 
-	ldx #$00
 	rts
 
 
@@ -892,7 +886,6 @@ _pad_trigger:
 	pla
 	tax
 	lda <PAD_STATET,x
-	ldx #$00
 	rts
 
 
@@ -903,7 +896,6 @@ _pad_state:
 
 	tax
 	lda <PAD_STATE,x
-	ldx #$00
 	rts
 
 
@@ -941,7 +933,6 @@ _rand8:
 	jsr rand1
 	jsr rand2
 	adc <RAND_SEED
-	ldx #$00
 	rts
 
 
@@ -1055,9 +1046,9 @@ _flush_vram_update_nmi:
 @updDone:
 
 	rts
-
-
-
+	
+	
+	
 ;void __fastcall__ vram_adr(unsigned int adr);
 
 _vram_adr:
@@ -1181,12 +1172,6 @@ _memfill:
 	rts
 
 
-;unsigned char __fastcall__ nesclock(void);
-
-_nesclock:
-	lda <FRAME_CNT1
-	ldx #$00
-	rts
 
 ;void __fastcall__ delay(unsigned char frames);
 
