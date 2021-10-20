@@ -1,6 +1,6 @@
 # Code Examples From The 'Making Games With NES' book
 
-Me just going through [Steven Hugg's book][4], sans the need to use the [8bitworkshop web IDE][5] and substituting whatever abstractions his IDE doesn't show.  The book makes use of [Shiru's NESlib][6] and the examples here use [a modified version by clbr][7].
+Me just going through [Steven Hugg's book][4], sans the need to use the [8bitworkshop web IDE][5].  The book makes use of [Shiru's NESlib][6] and the examples here use [Steven Hugg's fork of a modified version by clbr][7].
 
 ## Building the Examples
 
@@ -34,6 +34,6 @@ source ~/.bashrc
 [4]: https://www.amazon.com/gp/product/1075952727/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1075952727&linkCode=as2&tag=pzp-20&linkId=633176e8b36fea7f927020e2c322d80a
 [5]: https://8bitworkshop.com/
 [6]: https://shiru.untergrund.net/
-[7]: https://github.com/clbr/neslib
+[7]: https://github.com/sehugg/neslib
 [8]: https://ci.appveyor.com/api/projects/zeromus/fceux/artifacts/fceux-2.4.0-amd64.deb?branch=master&job=Ubuntu
 [9]: https://mesen.ca/
