@@ -2,25 +2,14 @@
 A simple music player.
 */
 
-#include <stdint.h>
 #include <string.h>
 
 #include <nes.h>
 
 // include NESLIB header
-#include "../includes/neslib.h"
+#include "../neslib/neslib.h"
 
 #include "apu.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name(push, "ZEROPAGE")
-#pragma data-name(push, "ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name(pop)
 
 //
 // MUSIC ROUTINES
