@@ -6,22 +6,11 @@ The split() function waits for this flag, then changes the
 X scroll register in the PPU.
 */
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 // include NESLIB header
-#include "./../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name(push, "ZEROPAGE")
-#pragma data-name(push, "ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name(pop)
+#include "./../neslib/neslib.h"
 
 // function to write a string into the name table
 //   adr = start address in name table

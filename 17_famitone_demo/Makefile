@@ -1,3 +1,3 @@
-NAME = siege_game
+NAME = famitone_demo
 
 include ../common.mk
