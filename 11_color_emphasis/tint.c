@@ -3,22 +3,11 @@ Demonstrates the PPU's tint and monochrome bits.
 Use the controller to see different combinations.
 */
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 // include NESLIB header
-#include "./../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name(push, "ZEROPAGE")
-#pragma data-name(push, "ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name(pop)
+#include "./../neslib/neslib.h"
 
 /*{pal:"nes",layout:"nes"}*/
 const char PALETTE[32] = { 

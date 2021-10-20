@@ -3,20 +3,8 @@ Unpacks a RLE-compressed nametable+attribute table into VRAM.
 Also uses the pal_bright() function to fade in the palette.
 */
 
-#include <stdint.h>
-
 // include NESLIB header
-#include "./../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name(push, "ZEROPAGE")
-#pragma data-name(push, "ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name(pop)
+#include "./../neslib/neslib.h"
 
 extern const byte climbr_title_pal[16];
 extern const byte climbr_title_rle[];
