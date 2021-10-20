@@ -99,7 +99,7 @@ void main(void)
   pal_col(2,0x20);
   pal_col(3,0x30);
   vram_adr(NTADR_A(0,26));
-  vram_write(" S=New Sound, Enter=Replay ", 28);
+  vram_write(" B=New Sound, START=Replay ", 28);
   apu_init();
   while(1) {
     ppu_off();
