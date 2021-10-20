@@ -5,22 +5,11 @@ We also use oam_meta_spr_pal() to change the color of each
 metasprite.
 */
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 // include NESLIB header
-#include "./../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name(push, "ZEROPAGE")
-#pragma data-name(push, "ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name(pop)
+#include "./../neslib/neslib.h"
 
 ///// METASPRITES
 

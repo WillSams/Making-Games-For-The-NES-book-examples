@@ -7,6 +7,7 @@ the nametables wrap around.
 */
 #include <string.h>
 
+// include NESLIB header
 #include "./../neslib/neslib.h"
 
 // function to write a string into the name table

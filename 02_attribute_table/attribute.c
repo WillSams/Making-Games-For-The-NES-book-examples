@@ -5,6 +5,7 @@ for the nametable. We copy it from an array in ROM to video RAM.
 #include <string.h>
 #include <stdlib.h>
 
+// include NESLIB header
 #include "./../neslib/neslib.h"
 
 // attribute table in PRG ROM

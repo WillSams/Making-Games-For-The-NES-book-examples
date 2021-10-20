@@ -4,22 +4,11 @@ sprite. Our demo uses 4 hardware sprites in a 2x2 pattern,
 forming 16x16 pixel sprites.
 */
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 // include NESLIB header
-#include "./../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name(push, "ZEROPAGE")
-#pragma data-name(push, "ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name(pop)
+#include "./../neslib/neslib.h"
 
 ///// METASPRITES
 

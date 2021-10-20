@@ -4,6 +4,8 @@ Set the screen background color and palette colors.
 Then write a message to the nametable.
 Finally, turn on the PPU to display video.
 */
+
+// include NESLIB header
 #include "./../neslib/neslib.h"
 
 // main function, run after console reset
