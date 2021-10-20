@@ -1,14 +1,6 @@
 ; Startup code for cc65 and Shiru's NES library
 ; based on code by Groepaz/Hitmen <groepaz@gmx.net>, Ullrich von Bassewitz <uz@cc65.org>
-
-
-FT_DPCM_OFF			= $c000		;$c000..$ffc0, 64-byte steps
-FT_SFX_STREAMS			= 4		;number of sound effects played at once, 1..4
-
-.define FT_DPCM_ENABLE  0			;undefine to exclude all DMC code
-.define FT_SFX_ENABLE   1			;undefine to exclude all sound effects code
-
-
+; edited by Steven Hugg (remove integrated Famitone2 library, add NMICallback)
 
 	.export _exit,__STARTUP__:absolute=1
 	.import initlib,push0,popa,popax,_main,zerobss,copydata
@@ -22,32 +14,13 @@ FT_SFX_STREAMS			= 4		;number of sound effects played at once, 1..4
 	.import NES_MAPPER,NES_PRG_BANKS,NES_CHR_BANKS,NES_MIRRORING
 
 	.include "zeropage.inc"
-
-
+	.include "nes.inc"
 
 FT_BASE_ADR		=$0100	;page in RAM, should be $xx00
 
 .define FT_THREAD       1	;undefine if you call sound effects in the same thread as sound update
 .define FT_PAL_SUPPORT	1   ;undefine to exclude PAL support
 .define FT_NTSC_SUPPORT	1   ;undefine to exclude NTSC support
-
-
-PPU_CTRL	=$2000
-PPU_MASK	=$2001
-PPU_STATUS	=$2002
-PPU_OAM_ADDR	=$2003
-PPU_OAM_DATA	=$2004
-PPU_SCROLL	=$2005
-PPU_ADDR	=$2006
-PPU_DATA	=$2007
-PPU_OAM_DMA	=$4014
-PPU_FRAMECNT	=$4017
-DMC_FREQ	=$4010
-CTRL_PORT1	=$4016
-CTRL_PORT2	=$4017
-
-OAM_BUF		=$0200
-PAL_BUF		=$01c0
 
 .segment "ZEROPAGE"
 
@@ -64,34 +37,37 @@ SCROLL_X: 		.res 1
 SCROLL_Y: 		.res 1
 SCROLL_X1: 		.res 1
 SCROLL_Y1: 		.res 1
-PAD_STATE: 		.res 2		;one byte per controller
-PAD_STATEP: 		.res 2
-PAD_STATET: 		.res 2
 PPU_CTRL_VAR:		.res 1
 PPU_CTRL_VAR1:		.res 1
 PPU_MASK_VAR: 		.res 1
-RAND_SEED: 		.res 2
-FT_TEMP: 		.res 3
+;;FT_TEMP: 		.res 3
+_oam_off:		.res 1
+NMICallback:		.res 3
 
 TEMP: 			.res 11
 
-PAD_BUF			=TEMP+1
+.exportzp NTSC_MODE, FRAME_CNT1, FRAME_CNT2, VRAM_UPDATE
+.exportzp NAME_UPD_ADR, NAME_UPD_ENABLE
+.exportzp PAL_UPDATE, PAL_BG_PTR, PAL_SPR_PTR
+.exportzp SCROLL_X, SCROLL_Y, SCROLL_X1, SCROLL_Y1
+.exportzp PPU_CTRL_VAR, PPU_CTRL_VAR1, PPU_MASK_VAR
+.exportzp _oam_off, NMICallback
+.exportzp TEMP
 
-PTR			=TEMP	;word
-LEN			=TEMP+2	;word
-NEXTSPR			=TEMP+4
-SCRX			=TEMP+5
-SCRY			=TEMP+6
-SRC			=TEMP+7	;word
-DST			=TEMP+9	;word
-
-RLE_LOW			=TEMP
-RLE_HIGH		=TEMP+1
-RLE_TAG			=TEMP+2
-RLE_BYTE		=TEMP+3
-
+.include "zpvars.inc"
 
 .segment "STARTUP"
+
+; startup values for the 8 MMC3 registers
+mmc3_register_init:
+.byte $00 ; 2KB CHR $0000
+.byte $02 ; 2KB CHR $0800
+.byte $04 ; 1KB CHR $1000
+.byte $05 ; 1KB CHR $1500
+.byte $06 ; 1KB CHR $1800
+.byte $07 ; 1KB CHR $1C00
+.byte $00 ; 4KB PRG $8000
+.byte $01 ; 4KB PRG $A000
 
 start:
 _exit:
@@ -104,6 +80,20 @@ _exit:
     stx DMC_FREQ
     stx PPU_CTRL		;no NMI
 
+	; initialize all registers of MMC3
+initMMC3:
+	lda #0
+	sta $E000 ; IRQ disable
+	sta $A000 ; mirroring init
+	tax
+:
+	stx $8000 ; select register
+	lda mmc3_register_init, X
+	sta $8001 ; initialize regiter
+	inx
+	cpx #8
+	bcc :-
+
 initPPU:
 
     bit PPU_STATUS
@@ -113,6 +103,10 @@ initPPU:
 @2:
     bit PPU_STATUS
     bpl @2
+
+; no APU frame counter IRQs
+	lda #$40
+	sta PPU_FRAMECNT
 
 clearPalette:
 
@@ -170,6 +164,14 @@ clearRAM:
 
 	jsr	initlib
 
+; setup NMICallback trampoline to NOP
+	lda #$4C	;JMP xxxx
+	sta NMICallback
+	lda #<HandyRTS
+	sta NMICallback+1
+	lda #>HandyRTS
+	sta NMICallback+2
+
 	lda #%10000000
 	sta <PPU_CTRL_VAR
 	sta PPU_CTRL		;enable NMI
@@ -197,21 +199,6 @@ detectNTSC:
 
 	jsr _ppu_off
 
-	ldx #<music_data
-	ldy #>music_data
-	lda <NTSC_MODE
-	jsr FamiToneInit
-
-.if(FT_SFX_ENABLE)
-	ldx #<sounds_data
-	ldy #>sounds_data
-	jsr FamiToneSfxInit
-.endif
-
-	lda #$fd
-	sta <RAND_SEED
-	sta <RAND_SEED+1
-
 	lda #0
 	sta PPU_SCROLL
 	sta PPU_SCROLL
@@ -219,25 +206,13 @@ detectNTSC:
 
 	jmp _main			;no parameters
 
-	.include "../includes/display.s"
+	.include "neslib.sinc"
 
-	.include "../includes/neslib.s"
-
-.segment "RODATA"
-
-music_data:
-;	.include "music.sinc"
-
-.if(FT_SFX_ENABLE)
-sounds_data:
-;	.include "sounds.sinc"
-.endif
+.segment "CHARS"
+	;;
 
 .segment "SAMPLES"
-
-.if(FT_DPCM_ENABLE)
-	.incbin "music_dpcm.bin"
-.endif
+	;;
 
 .segment "VECTORS"
 
@@ -245,6 +220,3 @@ sounds_data:
 	.word start	;$fffc reset
 	.word irq	;$fffe irq / brk
 
-; include the pattern table into CHR ROM
-.segment "CHARS"
-	.include "chr_generic.s"

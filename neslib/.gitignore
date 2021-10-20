@@ -1,0 +1,5 @@
+*.o
+*.lst
+*~
+crt0.lst
+neslib2.lib

@@ -4,18 +4,7 @@ Set the screen background color and palette colors.
 Then write a message to the nametable.
 Finally, turn on the PPU to display video.
 */
-#include <stdint.h>
-#include "./../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name (push,"ZEROPAGE")
-#pragma data-name (push,"ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name (pop)
+#include "./../neslib/neslib.h"
 
 // main function, run after console reset
 void main(void) {
@@ -28,7 +17,7 @@ void main(void) {
 
   // write text to name table
   vram_adr(NTADR_A(2,2));		// set address
-  vram_write("hello world!", 13);	// write bytes to video RAM
+  vram_write("HELLO WORLD!", 13);	// write bytes to video RAM
 
   // enable PPU rendering (turn on screen)
   ppu_on_all();

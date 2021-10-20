@@ -4,19 +4,8 @@ for the nametable. We copy it from an array in ROM to video RAM.
 */
 #include <string.h>
 #include <stdlib.h>
-#include <stdint.h>
 
-#include "./../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name (push,"ZEROPAGE")
-#pragma data-name (push,"ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name (pop)
+#include "./../neslib/neslib.h"
 
 // attribute table in PRG ROM
 const char ATTRIBUTE_TABLE[0x40] = {

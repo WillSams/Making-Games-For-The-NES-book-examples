@@ -1,0 +1,14 @@
+
+PTR			=TEMP	;word
+LEN			=TEMP+2	;word
+NEXTSPR			=TEMP+4
+SCRX			=TEMP+5
+SCRY			=TEMP+6
+SRC			=TEMP+7	;word
+DST			=TEMP+9	;word
+
+RLE_LOW			=TEMP
+RLE_HIGH		=TEMP+1
+RLE_TAG			=TEMP+2
+RLE_BYTE		=TEMP+3
+

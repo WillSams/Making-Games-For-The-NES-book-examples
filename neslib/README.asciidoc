@@ -1,0 +1,13 @@
+Neslib
+======
+
+This is a ca65 asm library consisting of useful NES functions. It's designed to be
+used with cc65 git master, no need for old runtimes or the like.
+
+Credit for making this goes to Shiru, who published the original in public domain.
+
+@clbr made some changes and fixed some things.
+
+@sehugg made some more changes to integrate with http://8bitworkshop.com/
+
+This is under the zlib license.
