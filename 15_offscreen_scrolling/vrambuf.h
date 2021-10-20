@@ -1,6 +1,8 @@
 #ifndef _VRAMBUF_H
 #define _VRAMBUF_H
 
+#include "../neslib/neslib.h"
+
 // VBUFSIZE = maximum update buffer bytes
 #define VBUFSIZE 128
 

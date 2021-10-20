@@ -6,25 +6,11 @@ CHR bank switch, we split the screen into four different regions
 that display their own pixels.
 */
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <nes.h>
 
 // include NESLIB header
-#include "../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name(push, "ZEROPAGE")
-#pragma data-name(push, "ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name(pop)
-
-#define NES_MAPPER 2		// UxROM mapper
-#define NES_CHR_BANKS 0		// CHR RAM
+#include "../neslib/neslib.h"
 
 bool ppu_is_on = false;
 

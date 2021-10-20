@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "../includes/neslib.h"
+#include "../neslib/neslib.h"
 
 #include "vrambuf.h"
 

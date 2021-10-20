@@ -11,24 +11,13 @@ using 2x2 blocks of tiles ("metatiles").
 We also use the split() function to create a status bar.
 */
 
-#include <stdint.h>
 #include <string.h>
 
 // include NESLIB header
-#include "../includes/neslib.h"
+#include "../neslib/neslib.h"
 
 // VRAM update buffer
 #include "vrambuf.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name(push, "ZEROPAGE")
-#pragma data-name(push, "ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name(pop)
 
 /// GLOBAL VARIABLES
 
