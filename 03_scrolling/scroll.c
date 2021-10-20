@@ -1,4 +1,3 @@
-
 /*
 Scrolling demo.
 We've selected horizontal mirroring as the default, so
@@ -6,20 +5,9 @@ nametables A and C are stacked on top of each other.
 The vertical scroll area is 480 pixels high; note how
 the nametables wrap around.
 */
-#include <stdint.h>
 #include <string.h>
 
-#include "./../includes/neslib.h"
-
-typedef uint8_t u8;
-
-#pragma bss-name (push,"ZEROPAGE")
-#pragma data-name (push,"ZEROPAGE")
-
-u8 oam_off;
-
-#pragma data-name(pop)
-#pragma bss-name (pop)
+#include "./../neslib/neslib.h"
 
 // function to write a string into the name table
 //   adr = start address in name table
@@ -57,12 +45,12 @@ void main(void) {
   pal_col(3,0x30);	// white
 
   // write text to name table
-  put_str(NTADR_A(2,0), "nametable a, line 0");
-  put_str(NTADR_A(2,15), "nametable a, line 15");
-  put_str(NTADR_A(2,29),"nametable a, line 29");
-  put_str(NTADR_C(2,0), "nametable c, line 0");
-  put_str(NTADR_C(2,15), "nametable c, line 15");
-  put_str(NTADR_C(2,29),"nametable c, line 29");
+  put_str(NTADR_A(2,0), "Nametable A, Line 0");
+  put_str(NTADR_A(2,15), "Nametable A, Line 15");
+  put_str(NTADR_A(2,29),"Nametable A, Line 29");
+  put_str(NTADR_C(2,0), "Nametable C, Line 0");
+  put_str(NTADR_C(2,15), "Nametable C, Line 15");
+  put_str(NTADR_C(2,29),"Nametable C, Line 29");
 
   // enable PPU rendering (turn on screen)
   ppu_on_all();
