@@ -1,3 +1,3 @@
-NAME = solarian_game
+NAME = climber_game
 
 include ../common.mk
