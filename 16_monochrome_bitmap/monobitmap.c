@@ -15,86 +15,110 @@ that display their own pixels.
 bool ppu_is_on = false;
 
 // simple 6502 delay loop (5 cycles per loop)
-#define DELAYLOOP(n) \
+#define DELAYLOOP(n)     \
   __asm__("ldy #%b", n); \
-  __asm__("@1: dey"); \
+  __asm__("@1: dey");    \
   __asm__("bne @1");
 
 // call every frame to split screen
-void monobitmap_split() {
+void monobitmap_split()
+{
   // split screen at line 128
-  split(0,0);
-  DELAYLOOP(15); // delay until end of line
+  split(0, 0);
+  DELAYLOOP(15);                    // delay until end of line
   PPU.control = PPU.control ^ 0x10; // bg bank 1
 }
 
 // set a pixel at (x,y) color 1=set, 0=clear
-void monobitmap_set_pixel(byte x, byte y, byte color) {
+void monobitmap_set_pixel(byte x, byte y, byte color)
+{
   byte b;
   // compute pattern table address
-  word a = (x/8)*16 | ((y&63)/8)*(16*32) | (y&7);
-  if (y & 64) a |= 8;
-  if (y & 128) a |= 0x1000;
+  word a = (x / 8) * 16 | ((y & 63) / 8) * (16 * 32) | (y & 7);
+  if (y & 64)
+    a |= 8;
+  if (y & 128)
+    a |= 0x1000;
   // if PPU is active, wait for next frame
-  if (ppu_is_on) {
+  if (ppu_is_on)
+  {
     ppu_wait_nmi();
   }
   // read old byte
   vram_adr(a);
   vram_read(&b, 1);
-  if (color) {
-    b |= 128 >> (x&7); // set pixel
-  } else {
-    b &= ~(128 >> (x&7)); // clear pixel
+  if (color)
+  {
+    b |= 128 >> (x & 7); // set pixel
+  }
+  else
+  {
+    b &= ~(128 >> (x & 7)); // clear pixel
   }
   // write new byte
   vram_adr(a);
   vram_put(b);
   // if PPU is active, reset PPU addr and split screen
-  if (ppu_is_on) {
+  if (ppu_is_on)
+  {
     vram_adr(0);
     monobitmap_split();
   }
 }
 
 // draw a line from (x0,y0) to (x1,y1)
-void monobitmap_draw_line(int x0, int y0, int x1, int y1, byte color) {
-  int dx = abs(x1-x0);
-  int sx = x0<x1 ? 1 : -1;
-  int dy = abs(y1-y0);
-  int sy = y0<y1 ? 1 : -1;
-  int err = (dx>dy ? dx : -dy)>>1;
+void monobitmap_draw_line(int x0, int y0, int x1, int y1, byte color)
+{
+  int dx = abs(x1 - x0);
+  int sx = x0 < x1 ? 1 : -1;
+  int dy = abs(y1 - y0);
+  int sy = y0 < y1 ? 1 : -1;
+  int err = (dx > dy ? dx : -dy) >> 1;
   int e2;
-  for(;;) {
+  for (;;)
+  {
     monobitmap_set_pixel(x0, y0, color);
-    if (x0==x1 && y0==y1) break;
+    if (x0 == x1 && y0 == y1)
+      break;
     e2 = err;
-    if (e2 > -dx) { err -= dy; x0 += sx; }
-    if (e2 < dy) { err += dx; y0 += sy; }
+    if (e2 > -dx)
+    {
+      err -= dy;
+      x0 += sx;
+    }
+    if (e2 < dy)
+    {
+      err += dx;
+      y0 += sy;
+    }
   }
 }
 
 // write values 0..255 to nametable
-void monobitmap_put_256inc() {
+void monobitmap_put_256inc()
+{
   word i;
-  for (i=0; i<256; i++)
+  for (i = 0; i < 256; i++)
     vram_put(i);
 }
 
 // sets up attribute table
-void monobitmap_put_attrib() {
+void monobitmap_put_attrib()
+{
   vram_fill(0x00, 0x10); // first palette
   vram_fill(0x55, 0x10); // second palette
 }
 
 // clears pattern table
-void monobitmap_clear() {
+void monobitmap_clear()
+{
   vram_adr(0x0);
   vram_fill(0x0, 0x2000);
 }
 
 // sets up PPU for monochrome bitmap
-void monobitmap_setup() {
+void monobitmap_setup()
+{
   monobitmap_clear();
   // setup nametable A and B
   vram_adr(NAMETABLE_A);
@@ -120,33 +144,37 @@ void monobitmap_setup() {
 
 /*{pal:"nes",layout:"nes"}*/
 const byte MONOBMP_PALETTE[16] = {
-  0x03,
-  0x30, 0x03, 0x30,  0x00,
-  0x03, 0x30, 0x30,  0x00,
-  0x30, 0x03, 0x30,  0x00,
-  0x03, 0x30, 0x30
-};
+    0x03,
+    0x30, 0x03, 0x30, 0x00,
+    0x03, 0x30, 0x30, 0x00,
+    0x30, 0x03, 0x30, 0x00,
+    0x03, 0x30, 0x30};
 
 // demo function, draws a bunch of lines
-void monobitmap_demo() {
+void monobitmap_demo()
+{
   byte i;
   static const byte x1 = 16;
   static const byte y1 = 16;
   static const byte x2 = 240;
   static const byte y2 = 208;
-  for (i=x1; i<=x2; i++) {
-    monobitmap_set_pixel(i,y1,1);
-    monobitmap_set_pixel(i,y2,1);
+  for (i = x1; i <= x2; i++)
+  {
+    monobitmap_set_pixel(i, y1, 1);
+    monobitmap_set_pixel(i, y2, 1);
   }
-  for (i=y1; i<=y2; i++) {
-    monobitmap_set_pixel(x1,i,1);
-    monobitmap_set_pixel(x2,i,1);
+  for (i = y1; i <= y2; i++)
+  {
+    monobitmap_set_pixel(x1, i, 1);
+    monobitmap_set_pixel(x2, i, 1);
   }
-  for (i=x1; i<x2; i+=16) {
-    monobitmap_draw_line(x1,y1,i,y2,1);
+  for (i = x1; i < x2; i += 16)
+  {
+    monobitmap_draw_line(x1, y1, i, y2, 1);
   }
-  for (i=y1; i<=y2; i+=16) {
-    monobitmap_draw_line(x1,y1,x2,i,1);
+  for (i = y1; i <= y2; i += 16)
+  {
+    monobitmap_draw_line(x1, y1, x2, i, 1);
   }
 }
 
@@ -158,7 +186,8 @@ void main(void)
   monobitmap_demo();
   ppu_on_all();
   // wait for key press
-  while (!pad_trigger(0)) {
+  while (!pad_trigger(0))
+  {
     ppu_wait_nmi();
     monobitmap_split();
   }
@@ -169,7 +198,8 @@ void main(void)
   // realtime display where 1 pixel per frame
   ppu_is_on = true;
   monobitmap_demo();
-  while(1) {
+  while (1)
+  {
     ppu_wait_nmi();
     monobitmap_split();
   }

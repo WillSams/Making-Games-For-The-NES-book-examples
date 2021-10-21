@@ -1,6 +1,7 @@
 #include "./../neslib/neslib.h"
 
-word bcd_add(word a, word b) {
+word bcd_add(word a, word b)
+{
   register word c, d;      // intermediate values
   c = a + 0x0666;          // add 6 to each BCD digit
   d = c ^ b;               // sum without carry propagation

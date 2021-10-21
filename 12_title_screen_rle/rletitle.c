@@ -9,9 +9,11 @@ Also uses the pal_bright() function to fade in the palette.
 extern const byte climbr_title_pal[16];
 extern const byte climbr_title_rle[];
 
-void fade_in() {
+void fade_in()
+{
   byte vb;
-  for (vb=0; vb<=4; vb++) {
+  for (vb = 0; vb <= 4; vb++)
+  {
     // set virtual bright value
     pal_bright(vb);
     // wait for 4/60 sec
@@ -22,7 +24,8 @@ void fade_in() {
   }
 }
 
-void show_title_screen(const byte* pal, const byte* rle) {
+void show_title_screen(const byte *pal, const byte *rle)
+{
   // disable rendering
   ppu_off();
   // set palette, virtual bright to 0 (total black)
@@ -40,5 +43,6 @@ void show_title_screen(const byte* pal, const byte* rle) {
 void main(void)
 {
   show_title_screen(climbr_title_pal, climbr_title_rle);
-  while(1);//do nothing, infinite loop
+  while (1)
+    ; // do nothing, infinite loop
 }

@@ -3,16 +3,16 @@
 root = true
 
 [*]
-trim_trailing_whitespace = true
 end_of_line = lf
-charset = utf-8
-indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
 
 [*.s]
-insert_final_newline = true
-indent_size = 2
 continuation_indent_size = 2
+indent_size = 2
+indent_style = space
 
 [*.{c,h},{common.mk,Makefile}]
-indent_size = 4
 continuation_indent_size = 4
+indent_size = 4
+indent_style = tab

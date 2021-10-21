@@ -13,14 +13,15 @@ The NMI and IRQ use the same callback function.
 #include "./../neslib/neslib.h"
 
 // "strobe" means "write any value"
-#define STROBE(addr) __asm__ ("sta %w", addr)
+#define STROBE(addr) __asm__("sta %w", addr)
 
 #define MMC3_IRQ_SET_VALUE(n) POKE(0xc000, (n));
-#define MMC3_IRQ_RELOAD()     STROBE(0xc001)
-#define MMC3_IRQ_DISABLE()    STROBE(0xe000)
-#define MMC3_IRQ_ENABLE()     STROBE(0xe001)
+#define MMC3_IRQ_RELOAD() STROBE(0xc001)
+#define MMC3_IRQ_DISABLE() STROBE(0xe000)
+#define MMC3_IRQ_ENABLE() STROBE(0xe001)
 
-void draw_text(word addr, const char* text) {
+void draw_text(word addr, const char *text)
+{
   vram_adr(addr);
   vram_write(text, strlen(text));
 }
@@ -28,9 +29,11 @@ void draw_text(word addr, const char* text) {
 word counters[128];
 byte irqcount = 0;
 
-void __fastcall__ irq_nmi_callback(void) {
+void __fastcall__ irq_nmi_callback(void)
+{
   // check high bit of A to see if this is an IRQ
-  if (__A__ & 0x80) {
+  if (__A__ & 0x80)
+  {
     // it's an IRQ from the MMC3 mapper
     // change PPU scroll registers
     PPU.scroll = counters[irqcount & 0x7f] >> 8;
@@ -40,7 +43,9 @@ void __fastcall__ irq_nmi_callback(void) {
     // acknowledge interrupt
     MMC3_IRQ_DISABLE();
     MMC3_IRQ_ENABLE();
-  } else {
+  }
+  else
+  {
     // this is a NMI
     // reload IRQ counter
     MMC3_IRQ_RELOAD();
@@ -60,29 +65,31 @@ void main(void)
   POKE(0xA001, 0x80);
   // Mirroring - horizontal
   POKE(0xA000, 0x01);
-  
+
   // set up MMC3 IRQs every 8 scanlines
   MMC3_IRQ_SET_VALUE(7);
   MMC3_IRQ_RELOAD();
   MMC3_IRQ_ENABLE();
   // enable CPU IRQ
-  __asm__ ("cli");
+  __asm__("cli");
   // set IRQ callback
   nmi_set_callback(irq_nmi_callback);
   // set palette colors
-  pal_col(1,0x04);
-  pal_col(2,0x20);
-  pal_col(3,0x30);
+  pal_col(1, 0x04);
+  pal_col(2, 0x20);
+  pal_col(3, 0x30);
   // fill vram
-  vram_adr(NTADR_A(0,0));
-  vram_fill('A', 32*28);
+  vram_adr(NTADR_A(0, 0));
+  vram_fill('A', 32 * 28);
   // turn on PPU/interrupts
   ppu_on_all();
   // loop forever, updating each counter at a different rate
-  while(1) {
+  while (1)
+  {
     byte i;
-    for (i=0; i<128; i++) {
-      counters[i] += i*16;
+    for (i = 0; i < 128; i++)
+    {
+      counters[i] += i * 16;
     }
     ppu_wait_frame();
   }

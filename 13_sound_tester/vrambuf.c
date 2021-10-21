@@ -4,24 +4,26 @@
 
 #include "vrambuf.h"
 
-
 // index to end of buffer
 byte updptr = 0;
 
 // add EOF marker to buffer (but don't increment pointer)
-void vrambuf_end(void) {
+void vrambuf_end(void)
+{
   VRAMBUF_SET(NT_UPD_EOF);
 }
 
 // clear vram buffer and place EOF marker
-void vrambuf_clear(void) {
+void vrambuf_clear(void)
+{
   updptr = 0;
   vrambuf_end();
 }
 
 // wait for next frame, then clear buffer
 // this assumes the NMI will call flush_vram_update()
-void vrambuf_flush(void) {
+void vrambuf_flush(void)
+{
   // make sure buffer has EOF marker
   vrambuf_end();
   // wait for next frame to flush update buffer
@@ -33,9 +35,11 @@ void vrambuf_flush(void) {
 
 // add multiple characters to update buffer
 // using horizontal increment
-void vrambuf_put(word addr, register const char* str, byte len) {
+void vrambuf_put(word addr, register const char *str, byte len)
+{
   // if bytes won't fit, wait for vsync and flush buffer
-  if (VBUFSIZE-4-len < updptr) {
+  if (VBUFSIZE - 4 - len < updptr)
+  {
     vrambuf_flush();
   }
   // add vram address
@@ -44,7 +48,7 @@ void vrambuf_put(word addr, register const char* str, byte len) {
   // add length
   VRAMBUF_ADD(len);
   // add data to buffer
-  memcpy(updbuf+updptr, str, len);
+  memcpy(updbuf + updptr, str, len);
   updptr += len;
   // place EOF mark
   vrambuf_end();
