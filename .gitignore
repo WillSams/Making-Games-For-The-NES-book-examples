@@ -55,5 +55,4 @@ dkms.conf
 **/*.labels
 **/disassembly
 
-.gitignore
-
+.github
